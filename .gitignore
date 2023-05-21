@@ -40,3 +40,6 @@ $RECYCLE.BIN/
 
 # Local environment variables
 .env
+
+# UTAM
+utam-lint.sarif

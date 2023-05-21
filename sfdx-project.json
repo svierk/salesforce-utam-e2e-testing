@@ -5,7 +5,7 @@
       "default": true
     }
   ],
-  "name": "lwc-starter-kit",
+  "name": "salesforce-utam-e2e-testing",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "57.0"
