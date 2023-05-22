@@ -21,4 +21,9 @@ TBD
 
 ## Read more about UTAM
 
-TBD
+- [UTAM Website](https://utam.dev/) | Official UTAM Documentation
+- [Run End-to-End Tests with the UI Test Automation Model (UTAM)](https://developer.salesforce.com/blogs/2022/05/run-end-to-end-tests-with-the-ui-test-automation-model-utam) | Post in Salessforce Developers' Blog
+- [Run End-to-End Tests With UTAM](https://www.youtube.com/watch?v=rxZfsjIwWeU) | YouTube video that provides a 15min UTAM overview
+- [Getting Started with UTAM](https://www.youtube.com/watch?v=YMxeCJexgMY) | YouTube video about a 1h step by step guide for writing a UTAM test
+- [UTAM JavaScript Recipes](https://github.com/salesforce/utam-js-recipes) | Various examples of how to test the Salesforce UI with UTAM
+- [Salesforce E-Bikes App](https://github.com/trailheadapps/ebikes-lwc) | LWC sample application with UTAM UI tests
