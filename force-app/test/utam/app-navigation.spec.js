@@ -38,6 +38,6 @@ describe('app-navigation', () => {
 
     // select and click the accounts tab
     const tab = await appNavBar.getNavItem('Accounts');
-    tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=Recent');
+    await tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=Recent');
   });
 });
