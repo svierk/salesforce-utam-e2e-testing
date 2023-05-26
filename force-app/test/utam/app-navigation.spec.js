@@ -17,7 +17,7 @@ describe('app-navigation', () => {
     // search for the sales app
     const menu = await utam.load(AppLauncherMenu);
     const search = await (await menu.getSearchBar()).getLwcInput();
-    search.setText('Service');
+    await search.setText('Service');
 
     // get all items and click first search result
     const items = await menu.getItems();
