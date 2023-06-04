@@ -5,7 +5,10 @@
 ## About the project
 
 This repository provides a template for setting up E2E UI test automation with [UTAM](https://utam.dev/) (UI Test Automation Model) in Salesforce DX projects.
-In addition to the basic test setup configuration, a number of sample test cases are included to help you get started with UTAM.
+In addition to the basic test setup configuration, a number of sample test cases are included to help you get started with UTAM. The configuration shown here was set up based on the contents of the following two repositories:
+
+- [UTAM JavaScript Recipes](https://github.com/salesforce/utam-js-recipes) | Various examples of how to test the Salesforce UI with UTAM
+- [Salesforce E-Bikes App](https://github.com/trailheadapps/ebikes-lwc) | LWC sample application with UTAM UI tests
 
 ## Prerequisites
 
@@ -47,7 +50,9 @@ Follow the steps below to get the template running and manually execute the samp
 
 ## How to write your own tests
 
-TBD
+Creating UTAM tests is not trivial and the setup may involve one or two hurdles. Fortunately, there is a handy [UTAM Chrome Browser Extension](https://utam.dev/tools/browser-extension) to help with writing the tests. This extension helps to identify the page objects of interest directly in the Salesforce org and generates the corresponding test code in the selected language:
+
+<img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*gQH6S45TfI0evZ_JsnpHHA.png" alt="custom-slider" width="500"/>
 
 ## Learn more about UTAM
 
@@ -55,5 +60,3 @@ TBD
 - [Run End-to-End Tests with the UI Test Automation Model (UTAM)](https://developer.salesforce.com/blogs/2022/05/run-end-to-end-tests-with-the-ui-test-automation-model-utam) | Post in Salesforce Developers' Blog
 - [Run End-to-End Tests With UTAM](https://www.youtube.com/watch?v=rxZfsjIwWeU) | YouTube video that provides a 15min UTAM overview
 - [Getting Started with UTAM](https://www.youtube.com/watch?v=YMxeCJexgMY) | YouTube video about a 1h step by step guide for writing a UTAM test
-- [UTAM JavaScript Recipes](https://github.com/salesforce/utam-js-recipes) | Various examples of how to test the Salesforce UI with UTAM
-- [Salesforce E-Bikes App](https://github.com/trailheadapps/ebikes-lwc) | LWC sample application with UTAM UI tests

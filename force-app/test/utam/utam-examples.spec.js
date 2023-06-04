@@ -18,7 +18,7 @@ describe('utam-examples', () => {
     const appLauncher = await (await appNav.getAppLauncherHeader()).getButton();
     await appLauncher.click();
 
-    // search for the sales app
+    // search for the service app
     const menu = await utam.load(AppLauncherMenu);
     const search = await (await menu.getSearchBar()).getLwcInput();
     await search.setText('Service');
