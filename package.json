@@ -35,7 +35,7 @@
     "@babel/eslint-parser": "^7.21.3",
     "@babel/preset-env": "^7.21.4",
     "@babel/register": "^7.21.0",
-    "@locker/eslint-config-locker": "^0.19.6",
+    "@locker/eslint-config-locker": "^0.19.8",
     "@lwc/eslint-plugin-lwc": "^1.6.2",
     "@prettier/plugin-xml": "^2.2.0",
     "@sa11y/jest": "^5.1.0",
