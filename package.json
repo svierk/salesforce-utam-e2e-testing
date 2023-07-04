@@ -30,11 +30,11 @@
     "server:lwc": "sfdx force:lightning:lwc:start"
   },
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
+    "@babel/cli": "^7.22.5",
     "@babel/core": "^7.22.5",
-    "@babel/eslint-parser": "^7.21.3",
-    "@babel/preset-env": "^7.21.4",
-    "@babel/register": "^7.21.0",
+    "@babel/eslint-parser": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@babel/register": "^7.22.5",
     "@locker/eslint-config-locker": "^0.19.8",
     "@lwc/eslint-plugin-lwc": "^1.6.2",
     "@prettier/plugin-xml": "^2.2.0",
@@ -60,11 +60,11 @@
     "lint-staged": "^13.2.0",
     "prettier": "^2.8.8",
     "prettier-plugin-apex": "^1.13.0",
-    "salesforce-pageobjects": "^4.0.0",
+    "salesforce-pageobjects": "^4.0.2",
     "typescript": "~5.0.4",
     "utam": "^2.0.2",
-    "wdio-chromedriver-service": "^7.3.2",
-    "wdio-utam-service": "^2.0.2"
+    "wdio-chromedriver-service": "^8.1.1",
+    "wdio-utam-service": "^2.1.0"
   },
   "lint-staged": {
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
