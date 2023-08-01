@@ -61,7 +61,7 @@
     "prettier": "^3.0.0",
     "prettier-plugin-apex": "^2.0.1",
     "salesforce-pageobjects": "^4.0.2",
-    "typescript": "~5.0.4",
+    "typescript": "~5.1.6",
     "utam": "^2.0.2",
     "wdio-chromedriver-service": "^8.1.1",
     "wdio-utam-service": "^2.1.0"
