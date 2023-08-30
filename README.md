@@ -60,3 +60,4 @@ Creating UTAM tests is not trivial and the setup may involve one or two hurdles.
 - [Run End-to-End Tests with the UI Test Automation Model (UTAM)](https://developer.salesforce.com/blogs/2022/05/run-end-to-end-tests-with-the-ui-test-automation-model-utam) | Post in Salesforce Developers' Blog
 - [Run End-to-End Tests With UTAM](https://www.youtube.com/watch?v=rxZfsjIwWeU) | YouTube video that provides a 15min UTAM overview
 - [Getting Started with UTAM](https://www.youtube.com/watch?v=YMxeCJexgMY) | YouTube video about a 1h step by step guide for writing a UTAM test
+- [Streamline E2E Testing with UTAM: Salesforce’s UI Test Automation Model](https://medium.com/capgemini-salesforce-architects/streamline-e2e-testing-with-utam-salesforces-ui-test-automation-model-51c0effb1e67) | Medium Post
