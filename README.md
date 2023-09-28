@@ -27,7 +27,7 @@ Follow the steps below to get the template running and manually execute the samp
 2. Next you need to authorize an org for which you want to run the tests. In VS Code this can be done by pressing **Command + Shift + P**, enter "sfdx", and select **SFDX: Authorize an Org**. Alternatively you can also run the following command from the command line:
 
    ```
-   sfdx force:auth:web:login
+   sf org login web
    ```
 
 3. Compile all UTAM page objects:
