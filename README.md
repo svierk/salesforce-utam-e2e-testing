@@ -16,7 +16,7 @@ To use this template, the [Node](https://nodejs.org/en/) version specified in th
 
 ## Getting started
 
-Follow the steps below to get the template running and manually execute the sample tests already included. The sample tests are generic enough to run in any Salesforce Org without specific configuration, such as a Trailhead Playground.
+Follow the steps below to get the template running and manually execute the sample tests already included. The sample tests should be generic enough to run in any Salesforce Org without specific configuration, such as a Trailhead Playground.
 
 1. First clone the repository and open it with VS Code, install all the recommended extensions and run the following command to install all required dependencies:
 
@@ -47,6 +47,12 @@ Follow the steps below to get the template running and manually execute the samp
    ```
    npm run test:ui
    ```
+
+**Note:** By default, the tests are executed in headless mode with the given configuration, i.e. the browser does not open visibly but runs tests in the background. This configuration is primarily intended for automatic execution in CI/CD pipelines. To deactivate the headless mode for local development and testing purposes, please comment out the following line in _wdio.conf.js_:
+
+```
+args: ['--headless', '--disable-gpu', '--window-size=1920,1080']
+```
 
 ## How to write your own tests
 

@@ -16,7 +16,8 @@ exports.config = {
       'goog:chromeOptions': {
         // to run chrome headless the following flags are required
         // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
-        //args: ['--headless', '--disable-gpu', '--window-size=1920,1080']
+        // to deactivate the headless mode for local development and testing, please comment out the following line
+        args: ['--headless', '--disable-gpu', '--window-size=1920,1080']
       }
     }
   ],
