@@ -1,6 +1,6 @@
 # 🧪 Salesforce UTAM E2E Testing
 
-![GitHub CI](https://github.com/svierk/salesforce-utam-e2e-testing/actions/workflows/ci.yaml/badge.svg)
+![GitHub CI](https://github.com/svierk/salesforce-utam-e2e-testing/actions/workflows/ci.yml/badge.svg)
 
 ## About the project
 

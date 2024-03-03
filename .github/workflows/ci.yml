@@ -1,4 +1,4 @@
-name: build
+name: validation
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
