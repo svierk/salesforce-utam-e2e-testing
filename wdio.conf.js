@@ -33,7 +33,7 @@ exports.config = {
     [
       UtamWdioService,
       {
-        implicitTimeout: 5,
+        implicitTimeout: 0,
         injectionConfigs: ['salesforce-pageobjects/ui-utam-pageobjects.config.json']
       }
     ]
