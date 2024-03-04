@@ -1,9 +1,9 @@
-import ObjectHomeDesktop from 'salesforce-pageobjects/force/pageobjects/objectHome';
-import AppLauncherMenu from 'salesforce-pageobjects/global/pageobjects/appLauncherMenu';
-import RecordActionWrapper from 'salesforce-pageobjects/global/pageobjects/recordActionWrapper';
-import RecordHomeTemplateDesktop from 'salesforce-pageobjects/global/pageobjects/recordHomeTemplateDesktop';
-import FormattedText from 'salesforce-pageobjects/lightning/pageobjects/formattedText';
-import DesktopLayoutContainer from 'salesforce-pageobjects/navex/pageobjects/desktopLayoutContainer';
+import ObjectHomeDesktop from 'salesforce-pageobjects/force/pageObjects/objectHome';
+import AppLauncherMenu from 'salesforce-pageobjects/global/pageObjects/appLauncherMenu';
+import RecordActionWrapper from 'salesforce-pageobjects/global/pageObjects/recordActionWrapper';
+import RecordHomeTemplateDesktop from 'salesforce-pageobjects/global/pageObjects/recordHomeTemplateDesktop';
+import FormattedText from 'salesforce-pageobjects/lightning/pageObjects/formattedText';
+import DesktopLayoutContainer from 'salesforce-pageobjects/navex/pageObjects/desktopLayoutContainer';
 import { logInSalesforce } from './utam-helper';
 
 describe('utam-examples', () => {
