@@ -1,6 +1,6 @@
 # 🧪 Salesforce UTAM E2E Testing
 
-![GitHub CI](https://github.com/svierk/salesforce-utam-e2e-testing/actions/workflows/ci.yaml/badge.svg)
+![GitHub CI](https://github.com/svierk/salesforce-utam-e2e-testing/actions/workflows/ci.yml/badge.svg)
 
 ## About the project
 
@@ -51,7 +51,7 @@ Follow the steps below to get the template running and manually execute the samp
 **Note:** By default, the tests are executed in headless mode with the given configuration, i.e. the browser does not open visibly but runs tests in the background. This configuration is primarily intended for automatic execution in CI/CD pipelines. To deactivate the headless mode for local development and testing purposes, please comment out the following line in _wdio.conf.js_:
 
 ```
-args: ['--headless', '--disable-gpu', '--window-size=1920,1080']
+args: ['--headless']
 ```
 
 ## How to write your own tests
@@ -59,6 +59,37 @@ args: ['--headless', '--disable-gpu', '--window-size=1920,1080']
 Creating UTAM tests is not trivial and the setup may involve one or two hurdles. Fortunately, there is a handy [UTAM Chrome Browser Extension](https://utam.dev/tools/browser-extension) to help with writing the tests. This extension helps to identify the page objects of interest directly in the Salesforce org and generates the corresponding test code in the selected language:
 
 <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*gQH6S45TfI0evZ_JsnpHHA.png" alt="custom-slider" width="500"/>
+
+## Automated Test Execution with GitHub Actions
+
+UTAM tests can also be executed automatically in headless mode within a pipeline. Below is an example with GitHub Actions, which is also used in this repository and can be found in the _.github_ directory:
+
+```
+tests:
+    name: E2E UI Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Select Node Version
+        uses: svierk/get-node-version@main
+      - name: Run npm clean-install
+        run: npm ci
+      - name: Install SF CLI
+        run: |
+          npm i -g @salesforce/cli
+          sf version
+      - name: Salesforce Org Login
+        run: sf org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
+      - name: Compile UTAM Page Objects
+        run: npm run test:ui:compile
+      - name: Prepare Login Details
+        run: npm run test:ui:generate:login
+      - name: UTAM E2E Tests
+        run: npm run test:ui
+```
 
 ## Learn more about UTAM
 
