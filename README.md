@@ -60,35 +60,40 @@ Creating UTAM tests is not trivial and the setup may involve one or two hurdles.
 
 <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*gQH6S45TfI0evZ_JsnpHHA.png" alt="custom-slider" width="500"/>
 
-## Automated Test Execution with GitHub Actions
+## Automated test execution with GitHub Actions
 
-UTAM tests can also be executed automatically in headless mode within a pipeline. Below is an example with GitHub Actions, which is also used in this repository and can be found in the _.github_ directory:
+UTAM tests can also be executed automatically in headless mode within a pipeline. The following Medium article describes how to an automated UTAM test execution in detail:
+sdf
+
+Below is an example with GitHub Actions, which is also used in this repository and can be found in the _.github_ directory:
 
 ```
 tests:
-    name: E2E UI Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Select Node Version
-        uses: svierk/get-node-version@main
-      - name: Run npm clean-install
-        run: npm ci
-      - name: Install SF CLI
-        run: |
-          npm i -g @salesforce/cli
-          sf version
-      - name: Salesforce Org Login
-        run: sf org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
-      - name: Compile UTAM Page Objects
-        run: npm run test:ui:compile
-      - name: Prepare Login Details
-        run: npm run test:ui:generate:login
-      - name: UTAM E2E Tests
-        run: npm run test:ui
+  name: E2E UI Tests
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+    - name: Select Node Version
+      uses: svierk/get-node-version@main
+    - name: Install Dependencies
+      run: npm ci
+    - name: Install SF CLI
+      uses: svierk/sfdx-cli-setup@main
+    - name: Salesforce Org Login
+      uses: svierk/sfdx-login@main
+      with:
+        client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
+        jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
+        username: ${{ secrets.SFDX_USERNAME }}
+    - name: Compile UTAM Page Objects
+      run: npm run test:ui:compile
+    - name: Prepare Login Details
+      run: npm run test:ui:generate:login
+    - name: UTAM E2E Tests
+      run: npm run test:ui
 ```
 
 ## Learn more about UTAM
