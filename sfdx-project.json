@@ -8,5 +8,5 @@
   "name": "salesforce-utam-e2e-testing",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "60.0"
+  "sourceApiVersion": "61.0"
 }

@@ -42,7 +42,7 @@ describe('utam-examples', () => {
 
     // select and click the accounts tab
     const tab = await appNavBar.getNavItem('Accounts');
-    await tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=Recent');
+    await tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=__Recent');
 
     // select current list view
     const listView = await (await utam.load(ObjectHomeDesktop)).getListView();
@@ -63,7 +63,7 @@ describe('utam-examples', () => {
 
     // select and click the accounts tab
     const tab = await appNavBar.getNavItem('Accounts');
-    await tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=Recent');
+    await tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=__Recent');
 
     // select current list view
     const listView = await (await utam.load(ObjectHomeDesktop)).getListView();
