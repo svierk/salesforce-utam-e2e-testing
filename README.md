@@ -63,7 +63,8 @@ Creating UTAM tests is not trivial and the setup may involve one or two hurdles.
 ## Automated test execution with GitHub Actions
 
 UTAM tests can also be executed automatically in headless mode within a pipeline. The following Medium article describes how to an automated UTAM test execution in detail:
-sdf
+
+[Automate Salesforce E2E Testing using UTAM & GitHub Actions](https://medium.com/capgemini-salesforce-architects/automate-salesforce-e2e-testing-using-utam-github-actions-b11906fefc85)
 
 Below is an example with GitHub Actions, which is also used in this repository and can be found in the _.github_ directory:
 
