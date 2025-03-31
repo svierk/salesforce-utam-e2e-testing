@@ -34,13 +34,13 @@ exports.config = {
       UtamWdioService,
       {
         implicitTimeout: 0,
-        injectionConfigs: ['salesforce-pageobjects/ui-utam-pageobjects.config.json']
+        injectionConfigs: ['salesforce-pageobjects/ui-global-components.config.json']
       }
     ]
   ],
   framework: 'jasmine',
   reporters: ['spec'],
-  jasmineNodeOpt: {
+  jasmineOpts: {
     // max execution time for a script, set to 5 min
     defaultTimeoutInterval: 1000 * 60 * 5
   }
