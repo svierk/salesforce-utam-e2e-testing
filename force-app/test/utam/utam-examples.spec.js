@@ -4,7 +4,7 @@ import RecordActionWrapper from 'salesforce-pageobjects/global/pageObjects/recor
 import RecordHomeTemplateDesktop from 'salesforce-pageobjects/global/pageObjects/recordHomeTemplateDesktop';
 import FormattedText from 'salesforce-pageobjects/lightning/pageObjects/formattedText';
 import DesktopLayoutContainer from 'salesforce-pageobjects/navex/pageObjects/desktopLayoutContainer';
-import { logInSalesforce } from './utam-helper';
+import { logInSalesforce } from './utam-helper.js';
 
 describe('utam-examples', () => {
   beforeEach(async () => {
