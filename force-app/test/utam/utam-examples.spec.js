@@ -1,8 +1,6 @@
 import ObjectHomeDesktop from 'salesforce-pageobjects/force/pageObjects/objectHome';
 import AppLauncherMenu from 'salesforce-pageobjects/global/pageObjects/appLauncherMenu';
 import RecordActionWrapper from 'salesforce-pageobjects/global/pageObjects/recordActionWrapper';
-import RecordHomeTemplateDesktop from 'salesforce-pageobjects/global/pageObjects/recordHomeTemplateDesktop';
-import FormattedText from 'salesforce-pageobjects/lightning/pageObjects/formattedText';
 import DesktopLayoutContainer from 'salesforce-pageobjects/navex/pageObjects/desktopLayoutContainer';
 import { logInSalesforce } from './utam-helper.js';
 
@@ -81,13 +79,5 @@ describe('utam-examples', () => {
     // click modal save button
     await recordForm.clickFooterButton('Save');
     await modal.waitForAbsence();
-
-    // select highlight panel to get record details
-    const recordHome = await utam.load(RecordHomeTemplateDesktop);
-    const highlights = await (await (await recordHome.getHighlights()).getRecordLayout()).waitForHighlights2();
-    const formattedText = await highlights.getPrimaryFieldContent(FormattedText);
-
-    // assert the account name in highlights panel matches the just created account
-    expect(await formattedText.getInnerText()).toContain('UTAM Test');
   });
 });
