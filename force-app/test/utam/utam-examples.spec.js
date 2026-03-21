@@ -83,31 +83,43 @@ describe('utam-examples', () => {
     // wait for the form items to be available
     await recordLayout.getAllItems();
 
-    // use deep shadow DOM traversal to fill in the Account Name field
-    // (UTAM slot-based selectors don't match the current Salesforce LWC rendering)
-    await browser.execute(() => {
-      function findFirstTextInput(root) {
-        const inputs = Array.from(root.querySelectorAll('input'));
-        const usable = inputs.find((inp) => inp.type !== 'hidden' && !inp.readOnly && !inp.disabled);
-        if (usable) return usable;
-        const all = Array.from(root.querySelectorAll('*'));
-        for (const el of all) {
-          if (el.shadowRoot) {
-            const found = findFirstTextInput(el.shadowRoot);
-            if (found) return found;
+    // Find the Account Name input by matching each input against its <label>
+    // (label[for=id] in the same shadow root). This is layout-order-independent
+    // and does not rely on LWC field-name attribute reflection.
+    // waitUntil retries until the field is ready, then sets the value in the
+    // same execute call to avoid WebElement serialisation issues.
+    await browser.waitUntil(
+      async () => {
+        return await browser.execute(() => {
+          function findAndFillAccountName(root) {
+            const inputs = Array.from(root.querySelectorAll('input:not([type="hidden"])'));
+            for (const input of inputs) {
+              if (input.readOnly || input.disabled) continue;
+              const id = input.id;
+              if (id) {
+                const label = root.querySelector(`label[for="${id}"]`);
+                if (label && label.textContent?.trim().includes('Account Name')) {
+                  input.focus();
+                  input.value = 'UTAM Test';
+                  input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+                  input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
+                  return true;
+                }
+              }
+            }
+            const all = Array.from(root.querySelectorAll('*'));
+            for (const el of all) {
+              if (el.shadowRoot) {
+                if (findAndFillAccountName(el.shadowRoot)) return true;
+              }
+            }
+            return false;
           }
-        }
-        return null;
-      }
-      const modal = document.querySelector('.oneRecordActionWrapper');
-      const input = findFirstTextInput(modal || document.body);
-      if (input) {
-        input.focus();
-        input.value = 'UTAM Test';
-        input.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
-        input.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
-      }
-    });
+          return findAndFillAccountName(document.body);
+        });
+      },
+      { timeout: 15000, interval: 500, timeoutMsg: 'Account Name input not found in shadow DOM' }
+    );
 
     // click modal save button
     await recordForm.clickFooterButton('Save');
