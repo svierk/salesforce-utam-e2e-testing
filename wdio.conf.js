@@ -40,7 +40,7 @@ exports.config = {
   ],
   framework: 'jasmine',
   reporters: ['spec'],
-  jasmineOpt: {
+  jasmineOpts: {
     // max execution time for a script, set to 5 min
     defaultTimeoutInterval: 1000 * 60 * 5
   }
