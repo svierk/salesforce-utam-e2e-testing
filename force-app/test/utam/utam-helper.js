@@ -21,8 +21,16 @@ export async function logInSalesforce() {
   // Navigate to login URL
   await browser.navigateTo(SALESFORCE_LOGIN_URL);
 
-  // Wait for home page URL
+  // Wait until the OTP/frontdoor redirect completes and we are on a Lightning page.
+  // The URL transitions: frontdoor.jsp → contentDoor → lightning.force.com/lightning[/...]
+  // We accept any lightning.force.com URL that is not an intermediate redirect page.
   const domDocument = utam.getCurrentDocument();
-  await domDocument.waitFor(async () => (await domDocument.getUrl()).endsWith('/home'));
+  await browser.waitUntil(
+    async () => {
+      const url = await browser.getUrl();
+      return url.includes('.force.com/lightning') && !url.includes('frontdoor') && !url.includes('contentDoor');
+    },
+    { timeout: 60000, interval: 500, timeoutMsg: 'Did not reach a Lightning page within 60s after login' }
+  );
   return domDocument;
 }

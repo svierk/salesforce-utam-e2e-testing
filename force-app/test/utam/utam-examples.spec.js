@@ -9,17 +9,17 @@ describe('utam-examples', () => {
     await logInSalesforce();
   });
 
-  it('navigate to accounts tab in the service app and create an account record', async () => {
+  it('navigate to accounts tab in the sales app and create an account record', async () => {
     // navigate to the app launcher
     const container = await utam.load(DesktopLayoutContainer);
     const appNav = await container.getAppNav();
     const appLauncher = await (await appNav.getAppLauncherHeader()).getButton();
     await appLauncher.click();
 
-    // search for the service app
+    // search for the sales app
     const menu = await utam.load(AppLauncherMenu);
     const search = await (await menu.getSearchBar()).getLwcInput();
-    await search.setText('Service');
+    await search.setText('Sales');
 
     // retry getItems() until search results are available — implicitTimeout is 0
     // so UTAM does not wait internally when search results are still loading
@@ -35,28 +35,72 @@ describe('utam-examples', () => {
       },
       { timeout: 15000, interval: 500, timeoutMsg: 'App Launcher search returned no items' }
     );
-    await (await items[0].getRoot()).click();
 
-    // reload the container after navigation to get fresh UTAM references
+    // find the item whose first line matches exactly 'Sales' to avoid clicking
+    // 'Sales Console' or other apps with 'Sales' in the name
+    let targetItem = items[0];
+    for (const item of items) {
+      try {
+        const text = await (await item.getRoot()).getText();
+        if (text.split('\n')[0].trim() === 'Sales') {
+          targetItem = item;
+          break;
+        }
+      } catch {
+        // skip unreadable item
+      }
+    }
+    await (await targetItem.getRoot()).click();
+
+    // the app context switch is asynchronous — the URL changes immediately but
+    // the nav bar app name updates shortly after; retry until it shows 'Sales'
+    await browser.waitUntil(
+      async () => {
+        try {
+          const c = await utam.load(DesktopLayoutContainer);
+          const nav = await c.getAppNav();
+          const name = await (await nav.getAppName()).getText();
+          return name === 'Sales';
+        } catch {
+          return false;
+        }
+      },
+      { timeout: 30000, interval: 1000, timeoutMsg: 'App context did not switch to Sales within 30s' }
+    );
+
+    // reload the container after the context switch to get fresh UTAM references
     const appNavAfterNav = await (await utam.load(DesktopLayoutContainer)).getAppNav();
 
     // assert that you have navigated to the correct app
     const appName = await (await appNavAfterNav.getAppName()).getText();
-    expect(appName).toEqual('Service');
+    expect(appName).toEqual('Sales');
 
     // select and click the accounts tab
     const appNavBar = await appNavAfterNav.getAppNavBar();
     const tab = await appNavBar.getNavItem('Accounts');
     await tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=__Recent');
 
-    // select current list view using LWC page objects
-    const objectHome = await utam.load(ObjectHome);
-    const listViewManager = await objectHome.getListViewManager();
-    const commonList = await listViewManager.getCommonListInternal();
-    const listViewHeader = await commonList.getHeader();
+    // with implicitTimeout: 0 the list view title may be empty while the LWC
+    // component is still rendering — retry the full chain until the title loads
+    let listViewHeader;
+    let listViewName;
+    await browser.waitUntil(
+      async () => {
+        try {
+          const lv = await utam.load(ObjectHome);
+          const lvm = await lv.getListViewManager();
+          const cl = await lvm.getCommonListInternal();
+          listViewHeader = await cl.getHeader();
+          listViewName = await listViewHeader.getListViewTitleViaPicker();
+          return listViewName && listViewName.length > 0;
+        } catch {
+          return false;
+        }
+      },
+      { timeout: 15000, interval: 500, timeoutMsg: 'List view title did not load within 15s' }
+    );
 
     // assert that you have selected the correct list view
-    const listViewName = await listViewHeader.getListViewTitleViaPicker();
     expect(listViewName).toEqual('Recently Viewed');
 
     // click on new account action
@@ -140,9 +184,26 @@ describe('utam-examples', () => {
       },
       { timeout: 15000, interval: 500, timeoutMsg: 'App Launcher search returned no items' }
     );
+
+    // click the first search result — 'Service' is consistently items[0]
     await (await items[0].getRoot()).click();
 
-    // reload the container after navigation to get fresh UTAM references
+    // the app context switch is asynchronous — retry until the nav bar shows 'Service'
+    await browser.waitUntil(
+      async () => {
+        try {
+          const c = await utam.load(DesktopLayoutContainer);
+          const nav = await c.getAppNav();
+          const name = await (await nav.getAppName()).getText();
+          return name === 'Service';
+        } catch {
+          return false;
+        }
+      },
+      { timeout: 30000, interval: 1000, timeoutMsg: 'App context did not switch to Service within 30s' }
+    );
+
+    // reload the container after the context switch to get fresh UTAM references
     const appNavAfterNav = await (await utam.load(DesktopLayoutContainer)).getAppNav();
 
     // assert that you have navigated to the correct app
@@ -154,14 +215,27 @@ describe('utam-examples', () => {
     const tab = await appNavBar.getNavItem('Cases');
     await tab.clickAndWaitForUrl('lightning/o/Case/list?filterName=__Recent');
 
-    // select current list view using LWC page objects
-    const objectHome = await utam.load(ObjectHome);
-    const listViewManager = await objectHome.getListViewManager();
-    const commonList = await listViewManager.getCommonListInternal();
-    const listViewHeader = await commonList.getHeader();
+    // with implicitTimeout: 0 the list view title may be empty while the LWC
+    // component is still rendering — retry the full chain until the title loads
+    let listViewHeader;
+    let listViewName;
+    await browser.waitUntil(
+      async () => {
+        try {
+          const lv = await utam.load(ObjectHome);
+          const lvm = await lv.getListViewManager();
+          const cl = await lvm.getCommonListInternal();
+          listViewHeader = await cl.getHeader();
+          listViewName = await listViewHeader.getListViewTitleViaPicker();
+          return listViewName && listViewName.length > 0;
+        } catch {
+          return false;
+        }
+      },
+      { timeout: 15000, interval: 500, timeoutMsg: 'List view title did not load within 15s' }
+    );
 
     // assert that you have selected the correct list view
-    const listViewName = await listViewHeader.getListViewTitleViaPicker();
     expect(listViewName).toEqual('Recently Viewed');
 
     // click on new case action
