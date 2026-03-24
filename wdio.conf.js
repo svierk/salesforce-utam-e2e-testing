@@ -17,7 +17,7 @@ exports.config = {
         // to run chrome headless the following flags are required
         // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
         // to deactivate the headless mode for local development and testing, please comment out the following line
-        args: ['--headless=new']
+        args: ['--headless=new', '--window-size=1920,1080']
       }
     }
   ],
@@ -38,6 +38,9 @@ exports.config = {
       }
     ]
   ],
+  before: async function () {
+    await browser.setWindowSize(1920, 1080);
+  },
   framework: 'jasmine',
   reporters: ['spec'],
   jasmineOpts: {
