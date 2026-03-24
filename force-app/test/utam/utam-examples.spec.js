@@ -9,7 +9,7 @@ describe('utam-examples', () => {
     await logInSalesforce();
   });
 
-  it('navigate to accounts tab in the sales app and create an account record', async () => {
+  it('navigate to the accounts tab in the sales app and create an account record', async () => {
     // navigate to the app launcher
     const container = await utam.load(DesktopLayoutContainer);
     const appNav = await container.getAppNav();
@@ -158,7 +158,7 @@ describe('utam-examples', () => {
     await modal.waitForAbsence();
   });
 
-  it('navigate to service app and create a case', async () => {
+  it('navigate to the cases tab in the service app and create a case record', async () => {
     // navigate to the app launcher
     const container = await utam.load(DesktopLayoutContainer);
     const appNav = await container.getAppNav();
