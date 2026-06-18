@@ -1,0 +1,19 @@
+<apex:page standardController="Account">
+
+    <apex:form >
+
+        <apex:pageBlock title="Record Type Picklist Test">
+
+            <apex:pageBlockSection columns="1">
+
+                <apex:outputText value="Industry Picklist"/>
+
+                <apex:inputField value="{!Account.Industry}"/>
+
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>

@@ -1,0 +1,175 @@
+<apex:page showHeader="false" applyHtmlTag="false" applyBodyTag="false" lightningStylesheets="true">
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head>
+      <title>Test Enhanced Web Chat | Salesforce</title>
+      <apex:slds />
+      <style type="text/css">
+            @font-face {
+                font-family: ITC Avant Garde;
+                src: url(https://a.sfdcstatic.com/shared/fonts/avant-garde/4c0a2f1e-8b66-47d8-8e7c-9b259c4d363f.woff2) format("woff2"),url(https://a.sfdcstatic.com/shared/fonts/avant-garde/f8c88707-ed03-43dd-aec9-29571c329bcc.woff) format("woff");
+                font-weight: 400
+            }
+            
+            body {
+                background: #EAF5FE;
+                font-family: system-ui;
+            }
+            
+            #bgImage {
+                min-height: 100%;
+                min-width: 1024px;
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 350px;
+                left: -64px;
+                background-image: url(/projRes/ui-admin-success-components/img/easy-onboarding-bg.jpg);
+                background-repeat: no-repeat;
+                background-size: cover;
+                z-index: -99999;
+            }
+            #mainContainer {
+                margin-top: 34px;
+                margin-left: 34px;
+            }
+            
+            #bodyContainer {
+                margin-left: 30px;
+            }
+            
+            #bodyContainer h1 {
+                font-family: ITC Avant Garde;
+                font-weight: 600;
+                font-size: 48px;            
+                color: #032D60;
+            }
+            
+            #bodyContainer ol {
+                list-style: decimal;
+            }
+            
+            #bodyContainer ol li {
+                margin-left: 0px;
+                margin-bottom: 16px;
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 24px;
+                color: #001639;
+            }
+
+            #accordion {
+                background-color: #eee;
+                width: 75%;
+                cursor: pointer;
+                padding: 15px;
+                margin-top: 10px;
+                border: none;
+                border-radius: 10px;
+                text-align: left;
+                outline: none;
+                transition: 0.4s;
+            }
+
+            #accordion img {
+                display: inline;
+                width: 16px;
+                margin-right: 10px;
+            }
+
+            .active, #accordion:hover {
+                background-color: #ccc; 
+            }
+
+            #accordion .chevrondown {
+                display: none;
+            }
+
+            #accordion.active .chevronright {
+                display: none;
+            }
+
+            #accordion.active .chevrondown {
+                display: inline;
+            }
+
+            #videoDemoContainer {
+                margin: 20px 0px;
+                width: 330px;
+                height: 452px;
+                display: none;
+            }
+        </style>
+
+        <script type="text/javascript" async="true" src="https://play.vidyard.com/embed/v4.js"></script>
+    </head>
+    <body>
+      <div id="bgImage"></div>
+      <div id="mainContainer">
+          <div id="logoContainer">
+              <img id="logo" src="https://c1.sfdcstatic.com/content/dam/sfdc-docs/www/logos/logo-salesforce.svg" width="65px" alt="Salesforce logo" />
+          </div>
+          <div id="bodyContainer">
+              <h1>Test Your Enhanced Web Chat Deployment</h1>
+              <ol>
+                  <li>In the previous browser tab where you’re signed into Salesforce, open the agent console.</li>
+                  <li>In the Omni-Channel utility or sidebar, make yourself available to accept incoming messaging sessions.<br />
+                     <button id="accordion">
+                        <img class="chevronright" src="/apexpages/slds/latest/assets/icons/utility/chevronright_60.png"/>
+                        <img class="chevrondown" src="/apexpages/slds/latest/assets/icons/utility/chevrondown_60.png"/>
+                        Show Me Where
+                     </button>
+                     <div id="videoDemoContainer">
+                        <img
+                            style="display: block; max-width: 330px; max-height: 452px;"
+                            class="vidyard-player-embed"
+                            src="https://play.vidyard.com/6udN7LzkmqU8RgRvyoKDrS.jpg"
+                            data-uuid="6udN7LzkmqU8RgRvyoKDrS"
+                            data-v="4"
+                            data-type="inline"
+                            data-width="330"
+                            data-height="452"
+                        />
+                     </div></li>
+                  <li>In this tab, open the chat conversation window and send a message as a customer.</li>
+                  <li>In Salesforce, accept the messaging session and send a response.</li>
+                  <li>Chat back and forth, and then end the conversation.</li>
+              </ol>
+          </div>
+      </div>
+      <script>
+            var videoAccordion = document.getElementById("accordion");
+            videoAccordion.addEventListener("click", function() {
+            this.classList.toggle("active");
+
+            var videoContainer = this.nextElementSibling;
+            if (videoContainer.style.display === "block") {
+                videoContainer.style.display = "none";
+            } else {
+                videoContainer.style.display = "block";
+            }
+        });
+        </script>
+    
+      <script type='text/javascript'>
+	function initEmbeddedMessaging() {
+		try {
+			embeddedservice_bootstrap.settings.language = 'en_US'; // For example, enter 'en' or 'en-US'
+
+			embeddedservice_bootstrap.init(
+				'00DdM00000uItvR',
+				'POC_Enhanced_Chat_Web',
+				'https://orgfarm-e1074d88a5-dev-ed.develop.my.site.com/ESWPOCEnhancedChatWeb1779798516083',
+				{
+					scrt2URL: 'https://orgfarm-e1074d88a5-dev-ed.develop.my.salesforce-scrt.com'
+				}
+			);
+		} catch (err) {
+			console.error('Error loading Embedded Messaging: ', err);
+		}
+	};
+</script>
+<script type='text/javascript' src='https://orgfarm-e1074d88a5-dev-ed.develop.my.site.com/ESWPOCEnhancedChatWeb1779798516083/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
+
+    </body>
+  </html>
+</apex:page>

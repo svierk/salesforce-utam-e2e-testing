@@ -1,0 +1,206 @@
+<template>
+
+<!-- LOGIN CARD (VISIBLE ONLY BEFORE LOGIN) -->
+
+<template if:false={showDashboard}>
+
+    <lightning-card title="Login" icon-name="utility:lock">
+
+        <div class="slds-p-around_medium">
+
+            <!-- LOGIN SCREEN -->
+
+            <template if:true={showLogin}>
+
+                <lightning-input
+                    label="Username"
+                    onchange={handleInput}
+                    name="user">
+                </lightning-input>
+
+                <lightning-input
+                    label="Password"
+                    type="password"
+                    onchange={handleInput}
+                    name="pass">
+                </lightning-input>
+
+                <lightning-button
+                    label="Sign In"
+                    variant="brand"
+                    onclick={handleInitialEntry}
+                    stretch
+                    class="slds-m-top_medium">
+                </lightning-button>
+
+            </template>
+
+
+            <!-- RESET PASSWORD SCREEN -->
+
+            <template if:true={showResetPassword}>
+
+                <p class="slds-m-bottom_small">
+                    Please reset your password
+                </p>
+
+                <lightning-input
+                    label="New Password"
+                    type="password"
+                    onchange={handleInput}
+                    name="newPass">
+                </lightning-input>
+
+                <lightning-input
+                    label="Confirm Password"
+                    type="password"
+                    onchange={handleInput}
+                    name="confirmPass">
+                </lightning-input>
+
+                <lightning-button
+                    label="Update Password"
+                    variant="brand"
+                    onclick={handlePasswordReset}
+                    stretch
+                    class="slds-m-top_medium">
+                </lightning-button>
+
+                <div class="slds-m-top_medium">
+
+                    <lightning-button-icon
+                        icon-name="utility:back"
+                        alternative-text="Back"
+                        onclick={handleBack}>
+                    </lightning-button-icon>
+
+                </div>
+
+            </template>
+
+
+            <!-- REGISTRATION SCREEN -->
+
+            <template if:true={showRegistration}>
+
+                <div class="slds-text-align_center slds-m-bottom_medium">
+
+                    <p class="slds-text-heading_small">
+                        Scan your custom secure key:
+                    </p>
+
+                    <img
+                        src={qrCodeUrl}
+                        alt="Secure QR Code"
+                        class="slds-m-vertical_medium"
+                        style="border: 2px solid #ddd;" />
+
+                </div>
+
+                <lightning-input
+                    label="Enter code from app"
+                    onchange={handleInput}
+                    name="otp">
+                </lightning-input>
+
+                <lightning-button
+                    label="Complete Setup"
+                    variant="success"
+                    onclick={handleVerification}
+                    stretch
+                    class="slds-m-top_small">
+                </lightning-button>
+
+                <div class="slds-m-top_small">
+
+                    <lightning-button
+                        icon-name="utility:back"
+                        onclick={handleBack}>
+                    </lightning-button>
+
+                </div>
+
+            </template>
+
+
+            <!-- OTP VERIFICATION SCREEN -->
+
+            <template if:true={showVerification}>
+
+                <p class="slds-m-bottom_small">
+                    Enter your 6-digit code:
+                </p>
+
+                <lightning-input
+                    label="Authenticator Code"
+                    onchange={handleInput}
+                    name="otp">
+                </lightning-input>
+
+                <lightning-button
+                    label="Verify"
+                    variant="brand"
+                    onclick={handleVerification}
+                    stretch
+                    class="slds-m-top_small">
+                </lightning-button>
+
+                <div class="slds-m-top_small">
+
+                    <lightning-button
+                        icon-name="utility:back"
+                        onclick={handleBack}>
+                    </lightning-button>
+
+                </div>
+
+            </template>
+
+        </div>
+
+    </lightning-card>
+
+</template>
+
+
+
+<!-- DASHBOARD (VISIBLE ONLY AFTER LOGIN) -->
+
+<template if:true={showDashboard}>
+
+    <div class="slds-p-around_medium slds-grid slds-grid_align-spread">
+
+        <div class="slds-text-heading_medium">
+
+            Welcome, {portalUserName}
+
+        </div>
+
+        <div>
+            <lightning-button
+                label="Refresh"
+                icon-name="utility:refresh"
+                class="slds-m-right_small"
+                onclick={handleRefresh}>
+            </lightning-button>
+
+            <lightning-button
+                label="Logout"
+                variant="neutral"
+                icon-name="utility:logout"
+                onclick={handleLogout}>
+            </lightning-button>
+        </div>
+
+        
+
+    </div>
+
+
+    <c-credential-dashboard
+        portal-user-id={userId}>
+    </c-credential-dashboard>
+
+</template>
+
+</template>
