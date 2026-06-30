@@ -29,7 +29,6 @@ exports.config = {
   connectionRetryCount: 3,
   automationProtocol: 'webdriver',
   services: [
-    'chromedriver',
     [
       UtamWdioService,
       {
