@@ -41,6 +41,8 @@ jobs:
         run: npm ci
       - name: Install SF CLI
         uses: svierk/sfdx-cli-setup@main
+        with:
+          version: 2.142.5
       - name: Salesforce Org Login
         uses: svierk/sfdx-login@main
         with:
