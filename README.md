@@ -68,7 +68,7 @@ UTAM tests can also be executed automatically in headless mode within a pipeline
 
 Below is an example with GitHub Actions, which is also used in this repository and can be found in the _.github_ directory:
 
-```
+```yaml
 tests:
   name: E2E UI Tests
   runs-on: ubuntu-latest
