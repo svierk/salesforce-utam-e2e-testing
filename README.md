@@ -97,11 +97,21 @@ tests:
       run: npm run test:ui
 ```
 
-## Learn more about UTAM
+## References
 
-- [UTAM Website](https://utam.dev/) | Official UTAM Documentation
+### Documentation
+
+- [UTAM Website](https://utam.dev/) | Official UTAM documentation
 - [Run End-to-End Tests with the UI Test Automation Model (UTAM)](https://developer.salesforce.com/blogs/2022/05/run-end-to-end-tests-with-the-ui-test-automation-model-utam) | Post in Salesforce Developers' Blog
-- [Run End-to-End Tests With UTAM](https://www.youtube.com/watch?v=rxZfsjIwWeU) | YouTube video that provides a 15min UTAM overview
-- [Getting Started with UTAM](https://www.youtube.com/watch?v=YMxeCJexgMY) | YouTube video about a 1h step by step guide for writing a UTAM test
-- [Streamline E2E Testing with UTAM: Salesforce’s UI Test Automation Model](https://medium.com/capgemini-salesforce-architects/streamline-e2e-testing-with-utam-salesforces-ui-test-automation-model-51c0effb1e67) | Medium Post
-- [Automate Salesforce E2E Testing using UTAM & GitHub Actions](https://medium.com/capgemini-salesforce-architects/automate-salesforce-e2e-testing-using-utam-github-actions-b11906fefc85) | Medium Post
+
+### Articles
+
+- [Streamline E2E Testing with UTAM: Salesforce's UI Test Automation Model](https://medium.com/capgemini-salesforce-architects/streamline-e2e-testing-with-utam-salesforces-ui-test-automation-model-51c0effb1e67) | Medium post
+- [Automate Salesforce E2E Testing using UTAM & GitHub Actions](https://medium.com/capgemini-salesforce-architects/automate-salesforce-e2e-testing-using-utam-github-actions-b11906fefc85) | Medium post
+- [From a Jira Ticket to a Running Salesforce UI Test Written by an AI](https://medium.com/capgemini-salesforce-architects/from-a-jira-ticket-to-a-running-salesforce-ui-test-written-by-an-ai-f18be3108130) | Medium post
+
+### Videos & Talks
+
+- [Run End-to-End Tests With UTAM](https://www.youtube.com/watch?v=rxZfsjIwWeU) | YouTube video, 15min UTAM overview
+- [Getting Started with UTAM](https://www.youtube.com/watch?v=YMxeCJexgMY) | YouTube video, 1h step by step guide for writing a UTAM test
+- [Streamline Salesforce E2E UI Testing with UTAM](https://www.youtube.com/watch?v=xnoZ2Lc_WnQ) | Apex Hours session, August 2025 ([slides](https://svierk.github.io/slides/apex-hours-25-utam.pdf))
