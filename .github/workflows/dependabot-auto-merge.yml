@@ -10,12 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]'
     steps:
-      - name: Get Dependabot Metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@main
-        with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-
       - name: Approve and Enable Auto-Merge
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
