@@ -13,6 +13,12 @@ exports.config = {
     {
       maxInstances: 1,
       browserName: 'chrome',
+      // @wdio/cli v9+ auto-negotiates a WebDriver Bidi session (webSocketUrl: true)
+      // unless this is set. wdio-utam-service drives raw classic WebDriver commands
+      // (findElements/execute) and its shadow-DOM traversal timing assumptions were
+      // built against v8's classic-only protocol; Bidi changes that timing enough to
+      // break dynamic UI flows (e.g. App Launcher search-as-you-type). Force classic.
+      'wdio:enforceWebDriverClassic': true,
       'goog:chromeOptions': {
         // to run chrome headless the following flags are required
         // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
