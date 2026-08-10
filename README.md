@@ -4,7 +4,7 @@
 
 ## About the project
 
-This repository provides a template for setting up E2E UI test automation with [UTAM](https://utam.dev/) (UI Test Automation Model) in Salesforce DX projects.
+This repository provides a template for setting up E2E UI test automation with [UTAM](https://developer.salesforce.com/docs/platform/utam) (UI Test Automation Model) in Salesforce DX projects.
 In addition to the basic test setup configuration, a number of sample test cases are included to help you get started with UTAM. The configuration shown here was set up based on the contents of the following two repositories:
 
 - [UTAM JavaScript Recipes](https://github.com/salesforce/utam-js-recipes) | Various examples of how to test the Salesforce UI with UTAM
@@ -56,7 +56,7 @@ args: ['--headless']
 
 ## How to write your own tests
 
-Creating UTAM tests is not trivial and the setup may involve one or two hurdles. Fortunately, there is a handy [UTAM Chrome Browser Extension](https://utam.dev/tools/browser-extension) to help with writing the tests. This extension helps to identify the page objects of interest directly in the Salesforce org and generates the corresponding test code in the selected language:
+Creating UTAM tests is not trivial and the setup may involve one or two hurdles. Fortunately, there is a handy [UTAM Chrome Browser Extension](https://developer.salesforce.com/docs/platform/utam/guide/browser-extension.html) to help with writing the tests. This extension helps to identify the page objects of interest directly in the Salesforce org and generates the corresponding test code in the selected language:
 
 <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*gQH6S45TfI0evZ_JsnpHHA.png" alt="custom-slider" width="500"/>
 
@@ -101,7 +101,7 @@ tests:
 
 ### Documentation
 
-- [UTAM Website](https://utam.dev/) | Official UTAM documentation
+- [UTAM Developer Guide](https://developer.salesforce.com/docs/platform/utam) | Official UTAM documentation on Salesforce Developers
 - [Run End-to-End Tests with the UI Test Automation Model (UTAM)](https://developer.salesforce.com/blogs/2022/05/run-end-to-end-tests-with-the-ui-test-automation-model-utam) | Post in Salesforce Developers' Blog
 
 ### Articles
