@@ -115,3 +115,4 @@ tests:
 - [Run End-to-End Tests With UTAM](https://www.youtube.com/watch?v=rxZfsjIwWeU) | YouTube video, 15min UTAM overview
 - [Getting Started with UTAM](https://www.youtube.com/watch?v=YMxeCJexgMY) | YouTube video, 1h step by step guide for writing a UTAM test
 - [Streamline Salesforce E2E UI Testing with UTAM](https://www.youtube.com/watch?v=xnoZ2Lc_WnQ) | Apex Hours session, August 2025 ([slides](https://svierk.github.io/slides/apex-hours-25-utam.pdf))
+- [Automate UI Testing with AI and UTAM](https://www.youtube.com/watch?v=-PaSb-zWjbQ) | Apex Hours session, August 2026 ([slides](https://svierk.github.io/slides/apex-hours-26-utam-ai.pdf))
