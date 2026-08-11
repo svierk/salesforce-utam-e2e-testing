@@ -104,9 +104,9 @@ jobs:
 
 A few conventions worth copying along with the snippet:
 
-- **Pin every action to an exact release tag** (`@v7.0.1`, not `@main` or `@v7`). A floating branch or major-version tag silently changes what runs in your pipeline; an exact tag makes every update a reviewable commit. [Dependabot](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference) keeps the pins current — see _.github/dependabot.yml_ for the `github-actions` ecosystem configuration used here.
+- **Pin every action to an exact release tag** (`@v7.0.1`, not `@main` or `@v7`). A floating branch or major-version tag silently changes what runs in your pipeline; an exact tag makes every update a reviewable commit. [Dependabot](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference) keeps the pins current - see _.github/dependabot.yml_ for the `github-actions` ecosystem configuration used here.
 - **Keep the org username in a repository variable, not a secret.** Only the connected app's consumer key (`SFDX_CONSUMER_KEY`) and the JWT private key (`SFDX_JWT_SECRET_KEY`) are confidential; `vars.SFDX_USERNAME` documents itself in the run log and keeps the secret list to what actually needs masking.
-- **Never interpolate a secret into a `run:` script.** Pass it as an action input as shown above, or expose it through `env:` — inlining `${{ secrets.* }}` into a shell command puts it into the command line and, with the wrong quoting, into the log.
+- **Never interpolate a secret into a `run:` script.** Pass it as an action input as shown above, or expose it through `env:` - inlining `${{ secrets.* }}` into a shell command puts it into the command line and, with the wrong quoting, into the log.
 - **Grant the workflow only `contents: read`** and add further permissions per job, where they are needed.
 - **Guard secret-dependent jobs against fork pull requests.** Those runs get no secrets by design, so an org login would fail for reasons unrelated to the change. In this repository the E2E job carries `if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository`.
 

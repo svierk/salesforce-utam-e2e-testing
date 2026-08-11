@@ -46,14 +46,14 @@ exports.config = {
   before: async function () {
     await browser.setWindowSize(1920, 1080);
     // Register a verified virtual WebAuthn authenticator for the session.
-    // Orgs that enforce MFA / passkey (WebAuthn) — e.g. a required passkey
-    // enrollment or identity verification on unrecognized devices — otherwise
+    // Orgs that enforce MFA / passkey (WebAuthn) - e.g. a required passkey
+    // enrollment or identity verification on unrecognized devices - otherwise
     // trap the headless browser on the "Create a Passkey" screen, so the login
     // never reaches Lightning ("Did not reach a Lightning page"). A headless CI
     // browser has no real authenticator and that screen has no skip option, and
     // trusted IP ranges don't help (a passkey is a device-bound credential, not
     // an IP challenge). With a verified virtual platform authenticator present,
-    // Salesforce satisfies the ceremony automatically and the login proceeds —
+    // Salesforce satisfies the ceremony automatically and the login proceeds -
     // no org change required. (W3C WebAuthn virtual authenticator, supported by
     // chromedriver.)
     try {

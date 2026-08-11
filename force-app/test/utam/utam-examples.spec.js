@@ -21,7 +21,7 @@ describe('utam-examples', () => {
     const search = await (await menu.getSearchBar()).getLwcInput();
     await search.setText('Sales');
 
-    // retry getItems() until search results are available — implicitTimeout is 0
+    // retry getItems() until search results are available - implicitTimeout is 0
     // so UTAM does not wait internally when search results are still loading
     let items;
     await browser.waitUntil(
@@ -52,7 +52,7 @@ describe('utam-examples', () => {
     }
     await (await targetItem.getRoot()).click();
 
-    // the app context switch is asynchronous — the URL changes immediately but
+    // the app context switch is asynchronous - the URL changes immediately but
     // the nav bar app name updates shortly after; retry until it shows 'Sales'
     await browser.waitUntil(
       async () => {
@@ -81,7 +81,7 @@ describe('utam-examples', () => {
     await tab.clickAndWaitForUrl('lightning/o/Account/list?filterName=__Recent');
 
     // with implicitTimeout: 0 the list view title may be empty while the LWC
-    // component is still rendering — retry the full chain until the title loads
+    // component is still rendering - retry the full chain until the title loads
     let listViewHeader;
     let listViewName;
     await browser.waitUntil(
@@ -170,7 +170,7 @@ describe('utam-examples', () => {
     const search = await (await menu.getSearchBar()).getLwcInput();
     await search.setText('Service');
 
-    // retry getItems() until search results are available — implicitTimeout is 0
+    // retry getItems() until search results are available - implicitTimeout is 0
     // so UTAM does not wait internally when search results are still loading
     let items;
     await browser.waitUntil(
@@ -185,10 +185,10 @@ describe('utam-examples', () => {
       { timeout: 15000, interval: 500, timeoutMsg: 'App Launcher search returned no items' }
     );
 
-    // click the first search result — 'Service' is consistently items[0]
+    // click the first search result - 'Service' is consistently items[0]
     await (await items[0].getRoot()).click();
 
-    // the app context switch is asynchronous — retry until the nav bar shows 'Service'
+    // the app context switch is asynchronous - retry until the nav bar shows 'Service'
     await browser.waitUntil(
       async () => {
         try {
@@ -216,7 +216,7 @@ describe('utam-examples', () => {
     await tab.clickAndWaitForUrl('lightning/o/Case/list?filterName=__Recent');
 
     // with implicitTimeout: 0 the list view title may be empty while the LWC
-    // component is still rendering — retry the full chain until the title loads
+    // component is still rendering - retry the full chain until the title loads
     let listViewHeader;
     let listViewName;
     await browser.waitUntil(
