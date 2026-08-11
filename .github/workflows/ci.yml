@@ -1,5 +1,14 @@
 name: Validation
 
+# Validates changes to this repository: runs the static quality gate (Prettier,
+# ESLint, LWC unit tests) and, wherever secrets are available, logs into the
+# target org and executes the UTAM end-to-end UI tests against it.
+#
+# Every `uses:` reference below is pinned to an exact release tag. Dependabot
+# keeps those pins current (see .github/dependabot.yml), so an action update is
+# always an explicit, reviewable change of the pin instead of a silent move of a
+# floating branch or major-version tag.
+
 on:
   push:
     branches: [main]
@@ -7,6 +16,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Least-privilege token: this workflow only reads the repository.
 permissions:
   contents: read
 
@@ -16,43 +26,82 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v7.0.1
         with:
-          fetch-depth: 0
+          persist-credentials: false # the GITHUB_TOKEN is not needed after the checkout - don't leave it in .git/config
+
+      # NODE_VERSION_OVERRIDE is a repository variable; leave it unset to fall
+      # back to engines.node from package.json, populate it to pin a version
+      # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@main
+        uses: svierk/get-node-version@v1.5.1
+        with:
+          node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
+
+      # --ignore-scripts skips the lifecycle scripts of the dependency tree, so a
+      # compromised package cannot execute code just by being installed. Nothing
+      # in this project needs them: the husky `prepare` hook is pointless in CI,
+      # and the edgedriver/geckodriver postinstalls only fetch Edge and Firefox
+      # drivers, while the suite runs Chrome (resolved by WebdriverIO at runtime).
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
+
       - name: Check Prettier
         run: npm run prettier
+
       - name: Check ESLint
-        run: npm run lint:sonar
+        run: npm run lint
+
       - name: LWC Unit Tests
         run: npm run test:unit:coverage
 
   tests:
     name: E2E UI Tests
+    # The UTAM suite needs an authenticated org, and pull requests from forks
+    # deliberately receive no secrets - so this job would fail there for reasons
+    # unrelated to the change. Skip it in that context (a skipped job counts as
+    # successful for the required status checks) and run it for pushes, manual
+    # runs and internal pull requests, Dependabot included.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v7.0.1
         with:
-          fetch-depth: 0
+          persist-credentials: false # the GITHUB_TOKEN is not needed after the checkout - don't leave it in .git/config
+
+      # NODE_VERSION_OVERRIDE is a repository variable; leave it unset to fall
+      # back to engines.node from package.json, populate it to pin a version
+      # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@main
+        uses: svierk/get-node-version@v1.5.1
+        with:
+          node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
+
+      # See the note in the Code Quality job: no dependency of this project needs
+      # its install scripts, so they stay off here as well.
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
+
       - name: Install SF CLI
-        uses: svierk/sfdx-cli-setup@main
+        uses: svierk/sfdx-cli-setup@v1.1.2
+
+      # The username is not confidential and lives in a repository variable; only
+      # the connected app's consumer key and the JWT private key are secrets.
+      # Both are handed to the action as inputs, never interpolated into a shell
+      # command, so they stay out of the job's command line and logs.
       - name: Salesforce Org Login
-        uses: svierk/sfdx-login@main
+        uses: svierk/sfdx-login@v1.4.2
         with:
           client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
           jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
           username: ${{ vars.SFDX_USERNAME }}
+
       - name: Compile UTAM Page Objects
         run: npm run test:ui:compile
+
       - name: Prepare Login Details
         run: npm run test:ui:generate:login
+
       - name: UTAM E2E Tests
         run: npm run test:ui

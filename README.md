@@ -1,6 +1,6 @@
 # 🧪 Salesforce UTAM E2E Testing
 
-![GitHub CI](https://github.com/svierk/salesforce-utam-e2e-testing/actions/workflows/ci.yml/badge.svg)
+[![Validation](https://github.com/svierk/salesforce-utam-e2e-testing/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/svierk/salesforce-utam-e2e-testing/actions/workflows/ci.yml)
 
 ## About the project
 
@@ -69,33 +69,46 @@ UTAM tests can also be executed automatically in headless mode within a pipeline
 Below is an example with GitHub Actions, which is also used in this repository and can be found in the _.github_ directory:
 
 ```yaml
-tests:
-  name: E2E UI Tests
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@main
-      with:
-        fetch-depth: 0
-    - name: Select Node Version
-      uses: svierk/get-node-version@main
-    - name: Install Dependencies
-      run: npm ci
-    - name: Install SF CLI
-      uses: svierk/sfdx-cli-setup@main
-    - name: Salesforce Org Login
-      uses: svierk/sfdx-login@main
-      with:
-        client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
-        jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
-        username: ${{ secrets.SFDX_USERNAME }}
-    - name: Compile UTAM Page Objects
-      run: npm run test:ui:compile
-    - name: Prepare Login Details
-      run: npm run test:ui:generate:login
-    - name: UTAM E2E Tests
-      run: npm run test:ui
+# least-privilege token: the workflow only reads the repository
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: E2E UI Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false # the GITHUB_TOKEN is not needed after the checkout
+      - name: Select Node Version
+        uses: svierk/get-node-version@v1.5.1
+      - name: Install Dependencies
+        run: npm ci
+      - name: Install SF CLI
+        uses: svierk/sfdx-cli-setup@v1.1.2
+      - name: Salesforce Org Login
+        uses: svierk/sfdx-login@v1.4.2
+        with:
+          client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
+          jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
+          username: ${{ vars.SFDX_USERNAME }}
+      - name: Compile UTAM Page Objects
+        run: npm run test:ui:compile
+      - name: Prepare Login Details
+        run: npm run test:ui:generate:login
+      - name: UTAM E2E Tests
+        run: npm run test:ui
 ```
+
+A few conventions worth copying along with the snippet:
+
+- **Pin every action to an exact release tag** (`@v7.0.1`, not `@main` or `@v7`). A floating branch or major-version tag silently changes what runs in your pipeline; an exact tag makes every update a reviewable commit. [Dependabot](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference) keeps the pins current — see _.github/dependabot.yml_ for the `github-actions` ecosystem configuration used here.
+- **Keep the org username in a repository variable, not a secret.** Only the connected app's consumer key (`SFDX_CONSUMER_KEY`) and the JWT private key (`SFDX_JWT_SECRET_KEY`) are confidential; `vars.SFDX_USERNAME` documents itself in the run log and keeps the secret list to what actually needs masking.
+- **Never interpolate a secret into a `run:` script.** Pass it as an action input as shown above, or expose it through `env:` — inlining `${{ secrets.* }}` into a shell command puts it into the command line and, with the wrong quoting, into the log.
+- **Grant the workflow only `contents: read`** and add further permissions per job, where they are needed.
+- **Guard secret-dependent jobs against fork pull requests.** Those runs get no secrets by design, so an org login would fail for reasons unrelated to the change. In this repository the E2E job carries `if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository`.
 
 ## References
 
