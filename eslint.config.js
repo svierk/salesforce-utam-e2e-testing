@@ -63,7 +63,19 @@ module.exports = defineConfig([
     languageOptions: {
       sourceType: 'module',
       ecmaVersion: 'latest',
-      globals: { ...globals.node, ...globals.es2021, ...globals.jasmine, utam: 'readonly', browser: 'readonly' }
+      // The spec files run in Node, but the callbacks passed to browser.execute()
+      // are serialized and evaluated in the page - so DOM globals like document
+      // and window are legitimately in scope there and must not be flagged.
+      // `browser` is declared last on purpose: it is the WebdriverIO instance,
+      // not a DOM global.
+      globals: {
+        ...globals.node,
+        ...globals.es2021,
+        ...globals.jasmine,
+        ...globals.browser,
+        utam: 'readonly',
+        browser: 'readonly'
+      }
     },
     plugins: { eslintJs },
     extends: ['eslintJs/recommended']
