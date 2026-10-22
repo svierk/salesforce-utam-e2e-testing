@@ -16,7 +16,7 @@ To use this template, the [Node](https://nodejs.org/en/) version specified in th
 
 ## Getting started
 
-Follow the steps below to get the template running and manually execute the sample tests already included. The sample tests should be generic enough to run in any Salesforce Org without specific configuration, such as a Trailhead Playground.
+Follow the steps below to get the template running and manually execute the sample tests already included. The sample tests should be generic enough to run in any Salesforce Org without specific configuration, such as a Trailhead Playground - in whatever language its user has set, because they address fields, actions and picklist values by their API names.
 
 1. First clone the repository and open it with VS Code, install all the recommended extensions and run the following command to install all required dependencies:
 
@@ -36,22 +36,18 @@ Follow the steps below to get the template running and manually execute the samp
    npm run test:ui:compile
    ```
 
-4. Prepare the Salesforce login information:
-
-   ```
-   npm run test:ui:generate:login
-   ```
-
-5. Finally, execute all existing UI tests:
+4. Finally, execute all existing UI tests:
 
    ```
    npm run test:ui
    ```
 
+   Every spec file logs in to the authorized default org with a fresh login URL from the Salesforce CLI - such a URL works only once, so each browser session gets its own. To test another org without changing your default, prefix the command: `SF_TARGET_ORG=<alias> npm run test:ui`. If you need a login URL outside the tests, `npm run test:ui:generate:login` writes one to _.env_ - it opens a session without a password, so never share or commit it.
+
 **Note:** By default, the tests are executed in headless mode with the given configuration, i.e. the browser does not open visibly but runs tests in the background. This configuration is primarily intended for automatic execution in CI/CD pipelines. To deactivate the headless mode for local development and testing purposes, please comment out the following line in _wdio.conf.js_:
 
 ```
-args: ['--headless']
+args: ['--headless=new', '--window-size=1920,1080']
 ```
 
 ## How to write your own tests
@@ -59,6 +55,8 @@ args: ['--headless']
 Creating UTAM tests is not trivial and the setup may involve one or two hurdles. Fortunately, there is a handy [UTAM Chrome Browser Extension](https://developer.salesforce.com/docs/platform/utam/guide/browser-extension.html) to help with writing the tests. This extension helps to identify the page objects of interest directly in the Salesforce org and generates the corresponding test code in the selected language:
 
 <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*gQH6S45TfI0evZ_JsnpHHA.png" alt="custom-slider" width="500"/>
+
+Where the Salesforce page objects do not cover a step, write a page object of your own: a _.utam.json_ file in a `__utam__` folder - next to the Lightning web component it describes, or in _force-app/test/utam/\_\_utam\_\__ for test-only page objects such as _recordModal.utam.json_ in this repository. `npm run test:ui:compile` compiles them into _pageObjects/_, from where the specs import them.
 
 For AI coding agents, [svierk/salesforce-skills](https://github.com/svierk/salesforce-skills) packages the know-how of this template as an agent skill: the [🧪 E2E Automator](https://github.com/svierk/salesforce-skills/tree/main/plugins/e2e-automator) brings this setup into an existing Salesforce DX project, turns stories and tickets into UTAM UI tests, writes page objects for custom components, and fixes and upgrades the test suite with every Salesforce release.
 
@@ -98,8 +96,6 @@ jobs:
           username: ${{ vars.SFDX_USERNAME }}
       - name: Compile UTAM Page Objects
         run: npm run test:ui:compile
-      - name: Prepare Login Details
-        run: npm run test:ui:generate:login
       - name: UTAM E2E Tests
         run: npm run test:ui
 ```

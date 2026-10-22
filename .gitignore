@@ -42,4 +42,5 @@ $RECYCLE.BIN/
 .env
 
 # UTAM
+pageObjects/
 utam-lint.sarif
