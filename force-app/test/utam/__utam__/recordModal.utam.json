@@ -1,0 +1,55 @@
+{
+  "description": {
+    "author": "svierk",
+    "text": [
+      "New and edit record modal of Lightning Experience.",
+      "Runs a footer action such as SaveEdit by its API name, so tests do not depend on the user's language."
+    ]
+  },
+  "root": true,
+  "selector": { "css": ".oneRecordActionWrapper" },
+  "elements": [
+    {
+      "name": "footer",
+      "selector": { "css": "records-form-footer" },
+      "shadow": {
+        "elements": [
+          {
+            "name": "actionsRibbon",
+            "selector": { "css": "runtime_platform_actions-actions-ribbon" },
+            "shadow": {
+              "elements": [
+                {
+                  "name": "action",
+                  "type": "salesforce-pageobjects/action/pageObjects/actionRenderer",
+                  "selector": {
+                    "css": "runtime_platform_actions-action-renderer[apiname='%s']",
+                    "args": [{ "name": "apiName", "type": "string" }]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "methods": [
+    {
+      "name": "clickAction",
+      "description": { "text": ["Waits for the footer action with the given API name, e.g. SaveEdit, and clicks it"] },
+      "compose": [
+        {
+          "apply": "waitFor",
+          "args": [
+            {
+              "type": "function",
+              "predicate": [{ "element": "action" }]
+            }
+          ]
+        },
+        { "element": "action", "apply": "clickButton" }
+      ]
+    }
+  ]
+}
