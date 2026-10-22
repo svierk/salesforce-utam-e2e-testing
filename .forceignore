@@ -10,6 +10,10 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+# UTAM page objects and UI tests
+**/__utam__/**
+force-app/test/**
 **/tsconfig.json
 
 **/*.ts
