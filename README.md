@@ -60,6 +60,8 @@ Creating UTAM tests is not trivial and the setup may involve one or two hurdles.
 
 <img src="https://cdn-images-1.medium.com/v2/resize:fit:1600/1*gQH6S45TfI0evZ_JsnpHHA.png" alt="custom-slider" width="500"/>
 
+For AI coding agents, [svierk/salesforce-skills](https://github.com/svierk/salesforce-skills) packages the know-how of this template as an agent skill: the [🧪 E2E Automator](https://github.com/svierk/salesforce-skills/tree/main/plugins/e2e-automator) brings this setup into an existing Salesforce DX project, turns stories and tickets into UTAM UI tests, writes page objects for custom components, and fixes and upgrades the test suite with every Salesforce release.
+
 ## Automated test execution with GitHub Actions
 
 UTAM tests can also be executed automatically in headless mode within a pipeline. The following Medium article describes how to an automated UTAM test execution in detail:
