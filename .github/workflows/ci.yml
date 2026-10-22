@@ -125,8 +125,5 @@ jobs:
       - name: Compile UTAM Page Objects
         run: npm run test:ui:compile
 
-      - name: Prepare Login Details
-        run: npm run test:ui:generate:login
-
       - name: UTAM E2E Tests
         run: npm run test:ui

@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { UtamWdioService } = require('wdio-utam-service');
+const { getScratchOrgLoginUrl } = require('./scripts/generate-login-url');
 // use prefix 'DEBUG=true' to run test in debug mode
 const { DEBUG } = process.env;
 const TIMEOUT = DEBUG ? 60 * 1000 * 30 : 60 * 1000;
@@ -43,6 +44,13 @@ exports.config = {
       }
     ]
   ],
+  // The CLI's frontdoor url logs in once. Every spec file runs in a new browser
+  // session, so each session gets a fresh url before it starts - a second spec
+  // file would otherwise end on the login page.
+  beforeSession: async function () {
+    process.env.SALESFORCE_LOGIN_URL = await getScratchOrgLoginUrl();
+    process.env.SALESFORCE_LOGIN_TIME = `${new Date().getTime()}`;
+  },
   before: async function () {
     await browser.setWindowSize(1920, 1080);
     // Register a verified virtual WebAuthn authenticator for the session.

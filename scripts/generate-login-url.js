@@ -9,18 +9,18 @@ const DOTENV_FILEPATH = join(__dirname, '../.env');
  * @returns {string} the scratch org url fetched from the getUrlCmd
  */
 async function getScratchOrgLoginUrl() {
-  try {
-    const getUrlCmd = 'sf org open -p /lightning -r --json';
-    console.log('Executing the following command: ', getUrlCmd);
-    const { stderr, stdout } = await exec(getUrlCmd, { cwd: __dirname });
-    if (stderr) throw new Error(stderr);
-    const response = JSON.parse(stdout);
-    const { url } = response.result;
-    console.log(`Command returned with response: ${url}`);
-    return url;
-  } catch (err) {
-    throw err;
+  const getUrlCmd = 'sf org open -p /lightning -r --json';
+  console.log('Executing the following command: ', getUrlCmd);
+  // the CLI also writes warnings to stderr, e.g. about an available update -
+  // whether the command worked is decided by the JSON response on stdout
+  const { stdout } = await exec(getUrlCmd, { cwd: __dirname });
+  const response = JSON.parse(stdout);
+  if (response.status !== 0 || !response.result?.url) {
+    throw new Error(`Command failed: ${response.message ?? stdout}`);
   }
+  // the url opens a session without a password, so it is never printed
+  console.log('Command returned a login url');
+  return response.result.url;
 }
 
 /**
@@ -38,7 +38,14 @@ SALESFORCE_LOGIN_TIME=${new Date().getTime()}`;
     console.log(`Property .env file successfully generated in ${DOTENV_FILEPATH}`);
   } catch (err) {
     console.error(err);
+    // a failed run must not look successful - an old .env would otherwise stay in place
+    process.exitCode = 1;
   }
 }
 
-generateLoginUrl();
+module.exports = { getScratchOrgLoginUrl };
+
+// run as a script (npm run test:ui:generate:login), not when wdio.conf.js imports it
+if (require.main === module) {
+  generateLoginUrl();
+}
