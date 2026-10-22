@@ -1,0 +1,11 @@
+# Configuration of the Salesforce Code Analyzer, used by the Code Review step in
+# .github/workflows/ci.yml. More information:
+# https://developer.salesforce.com/docs/platform/salesforce-code-analyzer/guide/config-custom.html
+
+engines:
+  # The project's own ESLint setup (eslint.config.js) already runs as a separate
+  # check. The engine bundled with the Code Analyzer would lint the same files
+  # with its generic LWC base config instead - unaware of the Jest, Jasmine and
+  # UTAM globals - and only report false positives.
+  eslint:
+    disable_engine: true

@@ -46,14 +46,39 @@ jobs:
       - name: Install Dependencies
         run: npm ci --ignore-scripts
 
-      - name: Check Prettier
-        run: npm run prettier
+      # The Salesforce Code Analyzer runs as a plugin of the SF CLI.
+      - name: Install SF CLI
+        uses: svierk/sfdx-cli-setup@v1.2.0
 
-      - name: Check ESLint
-        run: npm run lint
+      # Code Analyzer, Prettier and ESLint as one quality gate with a result
+      # table in the job summary. The Code Analyzer fails on violations of
+      # severity Moderate (3) or higher; code-analyzer.yml switches off its
+      # bundled ESLint engine, as the project's own ESLint runs below. Prettier
+      # runs read-only via prettier:verify - the `prettier` script combines
+      # --write with --check, which fixes the files and exits 0, so it could
+      # never fail the build. ESLint lints the same files as `npm run lint`, but
+      # writes the JSON report the action counts errors from.
+      - name: Code Review
+        uses: svierk/sfdx-code-review@v1.1.0
+        with:
+          code-analyzer: true
+          workspace: force-app
+          config-file: code-analyzer.yml
+          severity-threshold: 3
+          prettier: true
+          prettier-command: npm run prettier:verify
+          eslint: true
+          eslint-command: npx eslint force-app --format json --output-file eslint-report.json
 
+      # LWC Jest tests only; Apex and Flow tests would need an org. The own
+      # script keeps --skipApiVersionCheck and writes the lcov report the action
+      # reads the coverage from.
       - name: LWC Unit Tests
-        run: npm run test:unit:coverage
+        uses: svierk/sfdx-run-tests@v1.2.0
+        with:
+          apex: false
+          lwc: true
+          lwc-test-command: npm run test:unit:coverage
 
   tests:
     name: E2E UI Tests
