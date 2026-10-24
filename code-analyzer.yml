@@ -5,7 +5,21 @@
 engines:
   # The project's own ESLint setup (eslint.config.js) already runs as a separate
   # check. The engine bundled with the Code Analyzer would lint the same files
-  # with its generic LWC base config instead - unaware of the Jest, Jasmine and
-  # UTAM globals - and only report false positives.
+  # with its generic JavaScript and LWC base configs instead - unaware of the
+  # Jest, Jasmine and UTAM globals - and only report false positives. Only its
+  # SLDS base config stays on: it checks the component styles and markup for
+  # SLDS 2, which the project's ESLint does not.
   eslint:
-    disable_engine: true
+    disable_javascript_base_config: true
+    disable_lwc_base_config: true
+    disable_typescript_base_config: true
+    disable_react_base_config: true
+
+rules:
+  eslint:
+    # Retired SLDS classes (e.g. `slds-icon--small`) are Low by default, below
+    # the severity threshold of the Code Review step. Raised to Moderate, they
+    # fail the build like the retired SLDS 1 design tokens. Hard-coded values
+    # that have a styling hook stay Low: reported, without failing the build.
+    '@salesforce-ux/slds/enforce-bem-usage':
+      severity: Moderate
