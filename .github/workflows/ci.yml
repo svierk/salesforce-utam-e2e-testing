@@ -52,12 +52,12 @@ jobs:
 
       # Code Analyzer, Prettier and ESLint as one quality gate with a result
       # table in the job summary. The Code Analyzer fails on violations of
-      # severity Moderate (3) or higher; code-analyzer.yml switches off its
-      # bundled ESLint engine, as the project's own ESLint runs below. Prettier
-      # runs read-only via prettier:verify - the `prettier` script combines
-      # --write with --check, which fixes the files and exits 0, so it could
-      # never fail the build. ESLint lints the same files as `npm run lint`, but
-      # writes the JSON report the action counts errors from.
+      # severity Moderate (3) or higher; code-analyzer.yml limits its bundled
+      # ESLint engine to the SLDS rules, as the project's own ESLint runs below.
+      # Prettier runs read-only via prettier:verify - the `prettier` script
+      # combines --write with --check, which fixes the files and exits 0, so it
+      # could never fail the build. ESLint lints the same files as `npm run lint`,
+      # but writes the JSON report the action counts errors from.
       - name: Code Review
         uses: svierk/sfdx-code-review@v1.1.0
         with:
