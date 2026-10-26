@@ -34,7 +34,7 @@ jobs:
       # back to engines.node from package.json, populate it to pin a version
       # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@v1.5.2
+        uses: svierk/get-node-version@v1.6.0
         with:
           node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
 
@@ -59,7 +59,7 @@ jobs:
       # could never fail the build. ESLint lints the same files as `npm run lint`,
       # but writes the JSON report the action counts errors from.
       - name: Code Review
-        uses: svierk/sfdx-code-review@v1.1.0
+        uses: svierk/sfdx-code-review@v1.1.1
         with:
           code-analyzer: true
           workspace: force-app
@@ -99,7 +99,7 @@ jobs:
       # back to engines.node from package.json, populate it to pin a version
       # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@v1.5.2
+        uses: svierk/get-node-version@v1.6.0
         with:
           node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
 
@@ -109,7 +109,7 @@ jobs:
         run: npm ci --ignore-scripts
 
       - name: Install SF CLI
-        uses: svierk/sfdx-cli-setup@v1.1.3
+        uses: svierk/sfdx-cli-setup@v1.2.0
 
       # The username is not confidential and lives in a repository variable; only
       # the connected app's consumer key and the JWT private key are secrets.
