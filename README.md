@@ -108,6 +108,30 @@ A few conventions worth copying along with the snippet:
 - **Grant the workflow only `contents: read`** and add further permissions per job, where they are needed.
 - **Guard secret-dependent jobs against fork pull requests.** Those runs get no secrets by design, so an org login would fail for reasons unrelated to the change. In this repository the E2E job carries `if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository`.
 
+## AI-driven failure analysis with GitHub Agentic Workflows
+
+A red E2E run raises one question first: is the test broken, the application, or the environment? Answering it means reading a long WebdriverIO log, the error and the page the test stopped on - routine work an AI agent can take over. This repository does it with [GitHub Agentic Workflows](https://github.github.com/gh-aw/): _.github/workflows/e2e-failure-analyst.md_ describes the task in natural language, and `gh aw compile` turns it into the GitHub Actions workflow _e2e-failure-analyst.lock.yml_ next to it.
+
+Whenever the _Validation_ workflow fails, the analyst:
+
+1. collects the evidence of the run - the logs of the failed jobs, the JUnit results and the screenshot of every failed test, which _wdio.conf.js_ writes to _reports/_ and the CI uploads as the `e2e-reports` artifact
+2. reads it together with the code at the tested commit, using the [🧪 E2E Automator](https://github.com/svierk/salesforce-skills/tree/main/plugins/e2e-automator) skill to check what the installed Salesforce page objects offer
+3. classifies the failure as a **test defect** (with the concrete fix), an **application defect** (with the question for whoever knows the expected behaviour), an **environment** problem (login, org, browser) or **unclear**
+4. reports it as a comment on the pull request of the run, or - for runs on `main` - in an issue labelled `e2e-failure`, adding to an open issue when the same failure occurs again
+
+The agent analyses and recommends; it changes no code, and the team decides. Failures of the _Code Quality_ job are left alone.
+
+**Security model.** The org credentials never reach the agent: the E2E tests keep running in the ordinary CI job, and the analyst only reads what that job left behind. The agent runs in a sandbox behind the Agent Workflow Firewall with read-only repository access and no secrets - the Anthropic API key stays in a proxy outside it. Its only way to write is the declared safe outputs (one comment or one issue per run), and a threat detection job checks them before they are applied. The login URL of the test user opens a session without a password, so _wdio.conf.js_ redacts it from the JUnit results, and the analyst redacts it from the logs before reading them.
+
+**Setup.**
+
+1. Install the CLI: `gh extension install github/gh-aw`
+2. Store an [Anthropic API key](https://console.anthropic.com/) as repository secret: `gh aw secrets set ANTHROPIC_API_KEY --value "<key>"`
+3. Adjust `branches` in the trigger of _e2e-failure-analyst.md_ to your branch naming, and run `gh aw compile` after every change to the file - commit both the _.md_ and the _.lock.yml_.
+4. Try it on a past failure before relying on it: `gh aw run e2e-failure-analyst --raw-field run_id=<id of a failed run>`. With `staged: true` under `safe-outputs:` the run shows what it would post without posting it.
+
+`gh aw logs e2e-failure-analyst` shows tokens, AI credits and turns per run, and `gh aw forecast` projects the monthly cost from them. To report to Jira or Xray instead of GitHub, gh-aw offers Jira safe outputs such as `jira-add-comment`.
+
 ## References
 
 ### Documentation

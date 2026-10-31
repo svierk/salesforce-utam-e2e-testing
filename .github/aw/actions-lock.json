@@ -1,0 +1,14 @@
+{
+  "entries": {
+    "github/gh-aw-actions/setup@v1.0.1": {
+      "repo": "github/gh-aw-actions/setup",
+      "version": "v1.0.1",
+      "sha": "221ba4f4319de6b8e809d1a15528b3ae6a818aa5"
+    },
+    "svierk/get-node-version@v1.6.0": {
+      "repo": "svierk/get-node-version",
+      "version": "v1.6.0",
+      "sha": "b3fcd94b1b082e1979a85dbc2cb9c91f1168dd71"
+    }
+  }
+}
