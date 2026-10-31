@@ -46,6 +46,11 @@ updates:
   # the pipelines within days instead of weeks.
   - package-ecosystem: 'github-actions'
     directory: '/' # for this ecosystem "/" means .github/workflows
+    # The *.lock.yml files are compiled from the agentic workflow sources by
+    # `gh aw compile` - a Dependabot change there would be overwritten by the
+    # next compile. `gh aw upgrade` updates their actions instead.
+    exclude-paths:
+      - '.github/workflows/*.lock.yml'
     schedule:
       interval: 'weekly'
       day: 'monday'

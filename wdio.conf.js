@@ -1,10 +1,15 @@
 require('dotenv').config();
 
+const { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } = require('fs');
+const { join } = require('path');
 const { UtamWdioService } = require('wdio-utam-service');
 const { getScratchOrgLoginUrl } = require('./scripts/generate-login-url');
 // use prefix 'DEBUG=true' to run test in debug mode
 const { DEBUG } = process.env;
 const TIMEOUT = DEBUG ? 60 * 1000 * 30 : 60 * 1000;
+// JUnit results and failure screenshots - the CI uploads this folder, and the
+// E2E failure analyst (.github/workflows/e2e-failure-analyst.md) reads it
+const REPORTS_DIR = join(__dirname, 'reports');
 
 exports.config = {
   runner: 'local',
@@ -79,8 +84,40 @@ exports.config = {
       console.log(`Virtual authenticator not registered: ${error.message}`);
     }
   },
+  // A failed test leaves a screenshot of the page it stopped on, named after
+  // the suite and the test, next to the JUnit results.
+  afterTest: async function (test, context, { passed }) {
+    if (passed) return;
+    const dir = join(REPORTS_DIR, 'screenshots');
+    mkdirSync(dir, { recursive: true });
+    const name = test.fullName.replace(/[^a-z0-9-]+/gi, '-').slice(0, 120);
+    await browser.saveScreenshot(join(dir, `${name}.png`));
+  },
+  // The JUnit reporter records every WebDriver command, the navigation to the
+  // login URL included - and that URL opens a session without a password.
+  // Redact it before the reports are uploaded or read by anyone.
+  onComplete: function () {
+    const dir = join(REPORTS_DIR, 'junit');
+    if (!existsSync(dir)) return;
+    for (const file of readdirSync(dir)) {
+      const path = join(dir, file);
+      const xml = readFileSync(path, 'utf8')
+        .replace(/(frontdoor\.jsp\?)[^"\s]*/g, '$1<redacted>')
+        .replace(/((?:otp|sid)=)[^&"\s]*/g, '$1<redacted>');
+      writeFileSync(path, xml);
+    }
+  },
   framework: 'jasmine',
-  reporters: ['spec'],
+  reporters: [
+    'spec',
+    [
+      'junit',
+      {
+        outputDir: join(REPORTS_DIR, 'junit'),
+        outputFileFormat: ({ cid }) => `results-${cid}.xml`
+      }
+    ]
+  ],
   jasmineOpts: {
     // max execution time for a script, set to 5 min
     defaultTimeoutInterval: 1000 * 60 * 5

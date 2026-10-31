@@ -127,3 +127,17 @@ jobs:
 
       - name: UTAM E2E Tests
         run: npm run test:ui
+
+      # JUnit results and the screenshots of failed tests (see wdio.conf.js) -
+      # the evidence the E2E failure analyst works from, and an import source
+      # for test management tools such as Xray. Skipped only on cancellation, so
+      # a red run keeps its evidence; a login failure before the first test
+      # leaves no files, which is no error.
+      - name: Upload E2E Reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: e2e-reports
+          path: reports/
+          if-no-files-found: ignore
+          retention-days: 14
