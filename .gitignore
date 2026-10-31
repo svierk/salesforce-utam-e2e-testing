@@ -44,3 +44,6 @@ $RECYCLE.BIN/
 # UTAM
 pageObjects/
 utam-lint.sarif
+
+# UTAM E2E reports (JUnit results, failure screenshots)
+reports/
