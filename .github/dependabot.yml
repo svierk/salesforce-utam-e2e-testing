@@ -40,6 +40,13 @@ updates:
         applies-to: version-updates
         patterns:
           - '*'
+    ignore:
+      # Babel 8 cannot be installed yet: @lwc/eslint-plugin-lwc 3.x declares a
+      # peer of @babel/eslint-parser ^7, so `npm ci` fails with ERESOLVE. As all
+      # updates share one group, a Babel 8 bump would block every other update.
+      # Remove this once @lwc/eslint-plugin-lwc accepts Babel 8.
+      - dependency-name: '@babel/*'
+        update-types: ['version-update:semver-major']
 
   # GitHub Actions used by the workflows in .github/workflows. Checked weekly so
   # that a fix in one of the building blocks or in a third-party action reaches
