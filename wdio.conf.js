@@ -5,7 +5,7 @@ const { join } = require('path');
 const { UtamWdioService } = require('wdio-utam-service');
 const { getScratchOrgLoginUrl } = require('./scripts/generate-login-url');
 // use prefix 'DEBUG=true' to run test in debug mode
-const { DEBUG } = process.env;
+const { CI, DEBUG } = process.env;
 const TIMEOUT = DEBUG ? 60 * 1000 * 30 : 60 * 1000;
 // JUnit results and failure screenshots - the CI uploads this folder, and the
 // E2E failure analyst (.github/workflows/e2e-failure-analyst.md) reads it
@@ -28,8 +28,10 @@ exports.config = {
       'goog:chromeOptions': {
         // to run chrome headless the following flags are required
         // (see https://developers.google.com/web/updates/2017/04/headless-chrome)
+        // CI only: Chrome's sandbox can't start on runners with restricted user
+        // namespaces, and a small /dev/shm can crash the browser
         // to deactivate the headless mode for local development and testing, please comment out the following line
-        args: ['--headless=new', '--window-size=1920,1080']
+        args: ['--headless=new', '--window-size=1920,1080', ...(CI ? ['--no-sandbox', '--disable-dev-shm-usage'] : [])]
       }
     }
   ],

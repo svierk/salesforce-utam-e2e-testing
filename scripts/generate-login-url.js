@@ -13,7 +13,10 @@ async function getScratchOrgLoginUrl() {
   console.log('Executing the following command: ', getUrlCmd);
   // the CLI also writes warnings to stderr, e.g. about an available update -
   // whether the command worked is decided by the JSON response on stdout
-  const { stdout } = await exec(getUrlCmd, { cwd: __dirname });
+  // a color setting from the parent process, e.g. FORCE_COLOR from wdio or the CI
+  // runner, would make the CLI colorize its JSON, which then no longer parses
+  const env = { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' };
+  const { stdout } = await exec(getUrlCmd, { cwd: __dirname, env });
   const response = JSON.parse(stdout);
   if (response.status !== 0 || !response.result?.url) {
     throw new Error(`Command failed: ${response.message ?? stdout}`);

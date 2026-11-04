@@ -47,7 +47,7 @@ Follow the steps below to get the template running and manually execute the samp
 **Note:** By default, the tests are executed in headless mode with the given configuration, i.e. the browser does not open visibly but runs tests in the background. This configuration is primarily intended for automatic execution in CI/CD pipelines. To deactivate the headless mode for local development and testing purposes, please comment out the following line in _wdio.conf.js_:
 
 ```
-args: ['--headless=new', '--window-size=1920,1080']
+args: ['--headless=new', '--window-size=1920,1080', ...(CI ? ['--no-sandbox', '--disable-dev-shm-usage'] : [])]
 ```
 
 ## How to write your own tests

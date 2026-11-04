@@ -98,9 +98,17 @@ export async function selectPicklistValue(field, value) {
 }
 
 // Test data goes through the Salesforce CLI and its target org - the org the
-// login was generated for, as long as both use the same default or SF_TARGET_ORG
+// login was generated for, as long as both use the same default or SF_TARGET_ORG.
+// A color setting from the parent process, e.g. FORCE_COLOR from wdio or the CI
+// runner, would make the CLI colorize its JSON, which then no longer parses.
 const sf = (...args) =>
-  JSON.parse(execFileSync('sf', [...args, '--json'], { encoding: 'utf8', shell: process.platform === 'win32' })).result;
+  JSON.parse(
+    execFileSync('sf', [...args, '--json'], {
+      encoding: 'utf8',
+      shell: process.platform === 'win32',
+      env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' }
+    })
+  ).result;
 
 /**
  * Runs a SOQL query
